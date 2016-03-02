@@ -10,7 +10,7 @@ class Api::V1::UsersController < ApplicationController
           #@token = Token.create(user: @user)
           @token = @user.tokens.create()
           render "api/v1/users/show"
-        end    
+        end
     end
     #rails server -b $IP -p $PORT
 end

@@ -11,5 +11,5 @@ class Token < ActiveRecord::Base
     end while Token.where(token: self.token).any?
     self.expires_at ||= 1.month.from_now
   end
-  
+
 end
