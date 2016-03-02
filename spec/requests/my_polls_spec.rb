@@ -32,9 +32,28 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
 
     describe "POST /polls" do
       context "con token válido" do
-        before :each        
-      end
+        before :each do
+          @token = FactoryGirl.create(:token, expires_at: DateTime.now + 10.minutes)
+          post "/api/v1/polls", {token: @token.token, poll: {title: "Hola mundo", description: "asdasdasd qqawsd qwd qwd qwdq", expires_at: DateTime.now}}
+        end
+        it { have_http_status(200) }
+        # it { change(MyPoll,:count).by(1) }  esto no funca, por eso es bueno que las pruebas escritas en un principio fallen
+        it "crea una nueva encuesta" do
+          expect{
+            post "/api/v1/polls", {token: @token.token, poll: {title: "Hola mundo", description: "asdasdasd qqawsd qwd qwd qwdq", expires_at: DateTime.now}}
+          }.to change(MyPoll,:count).by(1)
+        end
+        it "responde con la encuesta creada" do
+          json = JSON.parse(response.body)
+          expect(json["title"]).to eq("Hola mundo")
+        end
 
+      end
+      context "con token inválido" do
+        before :each do
+          post "/api/v1/polls"
+        end
     end
 
+  end
 end
