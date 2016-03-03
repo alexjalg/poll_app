@@ -53,7 +53,19 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
         before :each do
           post "/api/v1/polls"
         end
-    end
+      end
+      context "unvalid params" do
+          before :each do
+              @token = FactoryGirl.create(:token, expires_at: DateTime.now + 10.minutes)
+              post "/api/v1/polls", {token: @token.token, poll: {title: "Hola mundo", expires_at: DateTime.now}}
+          end
+          it{ have_http_status(422)}
+          it "responde con los errores al guardar la encuesta" do
+               json = JSON.parse(response.body)
+               expect(json["errors"]).to_not be_empty
+          end
+      end
+      
 
   end
 end
