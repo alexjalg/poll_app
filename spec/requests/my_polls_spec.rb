@@ -65,7 +65,24 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
                expect(json["errors"]).to_not be_empty
           end
       end
-      
-
+  end
+  describe "PATCH /polls/:id" do
+    context "con token válido" do
+      before :each do
+        @token = FactoryGirl.create(:token, expires_at: DateTime.now + 10.minutes)
+        @poll = FactoryGirl.create(:my_poll, user: @token.user)
+        post "/api/v1/polls", {
+          token: @token.token,
+          poll: {title: "Hola mundo", description: "asdasdasd qqawsd qwd qwd qwdq", expires_at: DateTime.now}}
+      end
+    end
+    context "con token inválido" do
+      before :each do
+        @token = FactoryGirl.create(:token, expires_at: DateTime.now + 10.minutes)
+        @poll = FactoryGirl.create(:my_poll, user: FactoryGirl.create(:dummy_user))
+        post "/api/v1/polls", {token: @token.token, poll: {title: "Hola mundo", description: "asdasdasd qqawsd qwd qwd qwdq", expires_at: DateTime.now}}
+      end
+      it{ have_http_status(422)}
+    end
   end
 end

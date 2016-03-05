@@ -6,6 +6,7 @@ RSpec.describe User, type: :model do
   it { should allow_value("alexjalg@gmail.com").for(:email)}
   it { should validate_presence_of(:uid) }
   it { should validate_presence_of(:provider) }
+  it { should validate_uniqueness_of(:email) }
 
   it "deberia crear un usuario si el uid y el provider no existen" do
     expect{
@@ -24,7 +25,7 @@ RSpec.describe User, type: :model do
     user = FactoryGirl.create(:user)
     expect(
       User.from_omniauth({uid: user.uid, provider: user.provider})
-    ).to eq(user)  
-  end  
-  
+    ).to eq(user)
+  end
+
 end
