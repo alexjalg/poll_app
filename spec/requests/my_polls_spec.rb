@@ -88,4 +88,29 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
       it{ expect(response).to have_http_status(401)}
     end
   end
+  describe "DELETE /polls/:id" do
+    context "con token válido" do
+      before :each do
+        @token = FactoryGirl.create(:token, expires_at: DateTime.now + 10.minutes)
+        @poll = FactoryGirl.create(:my_poll, user: @token.user)
+      end
+      it{
+        delete api_v1_poll_path(@poll), {token: @token.token}
+        expect(response).to have_http_status(200)
+      }
+      it "elimina la encuesta indicada" do
+        expect{
+          delete api_v1_poll_path(@poll), { token: @token.token }
+        }.to change(MyPoll, :count).by(-1)
+      end
+    end
+    context "con token inválido" do
+      before :each do
+        @token = FactoryGirl.create(:token, expires_at: DateTime.now + 10.minutes)
+        @poll = FactoryGirl.create(:my_poll, user: FactoryGirl.create(:dummy_user))
+        delete api_v1_poll_path(@poll), {token: @token.token}
+      end
+      it{ expect(response).to have_http_status(401)}
+    end
+  end
 end
