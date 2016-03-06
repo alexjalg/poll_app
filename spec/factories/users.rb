@@ -10,5 +10,11 @@ FactoryGirl.define do
       provider "facebook"
       uid "aa123as12sd15b9fg90"
     end
+    factory :sequence_user do
+      sequence(:email) { |n| "person#{n}@example.com" }
+      name "Jose"
+      provider "facebook"
+      uid "aa123as12sd15b9fg90"
+    end
   end
 end
