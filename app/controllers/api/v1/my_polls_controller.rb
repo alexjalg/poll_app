@@ -2,6 +2,7 @@ class Api::V1::MyPollsController < ApplicationController
 
   before_action :authenticate, only: [  :create, :update, :destroy ]
   before_action :set_poll, only: [ :show, :update, :destroy]
+  before_action( only: [:update,:destroy] ) { |c| c.authenticate_owner(@poll.user) }
 
     def index
         @polls = MyPoll.all
@@ -20,24 +21,25 @@ class Api::V1::MyPollsController < ApplicationController
     end
 
     def update
-      if @poll.user == @current_user
-        @poll.update(my_polls_params)
-        render "api/v1/my_polls/show"
-      else
-        render json: {errors: "No tienes autorizado actualizar esta encuesta" }, status:  :unauthorized
-      end
+      @poll.update(my_polls_params)
+      render "api/v1/my_polls/show"
     end
 
     def destroy
-      if @poll.user == @current_user
-        @poll.destroy
-        render json: {message: "Fue eliminada la encuesta indicada" }
-      else
-        render json: {errors: "No tienes autorizado eliminar esta encuesta" }, status:  :unauthorized
+      @poll.destroy
+      render json: {message: "Fue eliminada la encuesta indicada" }
+    end
+
+    protected
+
+    def authenticate_owner(owner)
+      if owner != @current_user
+        render json: {errors: "No tiene autorización" }, status:  :unauthorized
       end
     end
 
     private
+
     def set_poll
       @poll = MyPoll.find(params[:id])
     end
