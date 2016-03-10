@@ -2,10 +2,9 @@ class Api::V1::QuestionsController < ApplicationController
 
   before_action :authenticate, except: [ :index,:show ]
   before_action :set_question, only: [ :show,:update,:delete ]
-
+  before_action :set_poll
   #GET /polls/1/questions
   def index
-    @poll = MyPoll.find(params[:poll_id])
     @questions = @poll.questions
   end
 
@@ -34,6 +33,9 @@ class Api::V1::QuestionsController < ApplicationController
   private
   def question_params
     params.require(:question).permit(:description)
+  end
+  def set_poll
+    @poll = MyPoll.find(params[:poll_id])
   end
   def set_question
     @question = Question.find(params[:id])
