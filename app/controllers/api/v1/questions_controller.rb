@@ -15,6 +15,12 @@ class Api::V1::QuestionsController < ApplicationController
 
   #POST /polls/1/questions
   def create
+    @question = @poll.questions.new(question_params)
+    if @question.save
+      render template: "api/v1/questions/show"
+    else
+      render json: {error: @question.errors }, status: :unprocessable_entity 
+    end
   end
 
   #PATCH PUT /polls/1/questions/1
@@ -27,7 +33,7 @@ class Api::V1::QuestionsController < ApplicationController
 
   private
   def question_params
-
+    params.require(:question).permit(:description)
   end
   def set_question
     @question = Question.find(params[:id])
