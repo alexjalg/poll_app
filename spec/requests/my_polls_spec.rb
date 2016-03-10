@@ -7,7 +7,7 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
             FactoryGirl.create_list(:my_poll, 10)
             get "/api/v1/polls"
         end
-        it { have_http_status(200) }
+        it{ expect(response).to have_http_status(200)}
         it "mande la lista de encuestas" do
             json = JSON.parse(response.body)
             expect(json.length).to eq(MyPoll.count)
@@ -19,7 +19,7 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
             @poll = FactoryGirl.create(:my_poll)
             get "/api/v1/polls/#{@poll.id}"
         end
-        it { have_http_status(200) }
+        it{ expect(response).to have_http_status(200)}
         it "manda la encuesta solicitada" do
             json = JSON.parse(response.body)
             expect(json["id"]).to eq(@poll.id)
@@ -36,7 +36,7 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
           @token = FactoryGirl.create(:token, expires_at: DateTime.now + 10.minutes)
           post "/api/v1/polls", {token: @token.token, poll: {title: "Hola mundo", description: "asdasdasd qqawsd qwd qwd qwdq", expires_at: DateTime.now}}
         end
-        it { have_http_status(200) }
+        it{ expect(response).to have_http_status(200)}
         # it { change(MyPoll,:count).by(1) }  esto no funca, por eso es bueno que las pruebas escritas en un principio fallen
         it "crea una nueva encuesta" do
           expect{
