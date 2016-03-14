@@ -26,7 +26,7 @@ RSpec.describe Api::V1::QuestionsController, type: :request do
     context "con usuario válido" do
       before :each do
         post api_v1_poll_questions_path(@poll),
-          { question: { description: "Cual es tu lenguaje favorita?"}, 
+          { question: { description: "Cual es tu lenguaje favorita?"},
             token: @token.token }
       end
       it{ expect(response).to have_http_status(200)}
@@ -43,6 +43,23 @@ RSpec.describe Api::V1::QuestionsController, type: :request do
       end
     end
     context "con usuario inválido" do
+      before :each do
+        new_user = FactoryGirl.create(:dummy_user)
+        @new_token = FactoryGirl.create(:token,
+          user: new_user,
+          expires_at: DateTime.now + 1.month)
+        post api_v1_poll_questions_path(@poll),
+          { question: { description: "Cual es tu lenguaje favorita?"},
+            token: @new_token.token }
+      end
+      it{ expect(response).to have_http_status(401)}
+      it "No cambia el número de preguntas" do
+        expect{
+          post api_v1_poll_questions_path(@poll),
+            { question: { description: "Cual es tu lenguaje favorita?"},
+              token: @new_token.token }
+        }.to change(Question, :count).by(0)
+      end
     end
   end
 end

@@ -6,6 +6,14 @@ class ApplicationController < ActionController::Base
 
   # before_action :authenticate
 
+  protected
+
+  def authenticate_owner(owner)
+    if owner != @current_user
+      render json: {errors: "No tiene autorizado editar este recurso" }, status:  :unauthorized
+    end
+  end
+
   def authenticate
     #@current_user = User.first
     token_str = params[:token]
