@@ -26,6 +26,20 @@ RSpec.describe Api::V1::QuestionsController, type: :request do
   end
   
   
+  describe "GET /polls/:poll_id/questions/:id" do
+    before :each do
+      @question = @poll.questions[0]
+      get api_v1_poll_question_path(@poll, @question),
+        {question: {description: "Hola mundo"}}
+    end
+    it{ expect(response).to have_http_status(200)}
+    it "esperamos que nos mande la pregunta solicitada" do
+      json = JSON.parse(response.body)
+      expect(json["description"]).to eq(@question.description)
+      expect(json["id"]).to eq(@question.id)
+    end
+  end
+  
   describe "POST /polls/:poll_id/questions" do
     context "con usuario válido" do
       before :each do
