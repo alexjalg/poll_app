@@ -17,16 +17,16 @@ class Api::V1::AnswersController < ApplicationController
 
   #PATCH PUT /polls/1/answers/1
   def update
-    if @question.update(question_params)
+    if @answer.update(answer_params)
       render template: "api/v1/answers/show"
     else
-      render json: {error: @question.errors }, status: :unprocessable_entity
+      render json: {error: @answer.errors }, status: :unprocessable_entity
     end
   end
 
   #DELETE /polls/1/answers/1
   def destroy
-    @question.destroy
+    @answer.destroy
     head :ok
   end
 
@@ -38,6 +38,6 @@ class Api::V1::AnswersController < ApplicationController
     @poll = MyPoll.find(params[:poll_id])
   end
   def set_answer
-    @question = Answer.find(params[:id])
+    @answer = Answer.find(params[:id])
   end
 end

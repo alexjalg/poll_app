@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::QuestionsController, type: :request do
+RSpec.describe Api::V1::AnswersController, type: :request do
 
   before :each do
     @token = FactoryGirl.create(:token, expires_at: DateTime.now + 1.month )
@@ -34,12 +34,32 @@ RSpec.describe Api::V1::QuestionsController, type: :request do
   end
   
   describe "PUT/PATCH /polls/:poll_id/answers/:id" do
-
+    before :each do
+      @answer = FactoryGirl.create(:answer, question: @question)
+      put api_v1_poll_answer_path(@poll, @answer), {answer: { description: "Nueva respuesta" }, 
+                                                    token: @token.token }
+    end
+    it{ expect(response).to have_http_status(200) }
+    it "actualiza los campos indicados" do
+      @answer.reload
+      expect(@answer.description).to eq("Nueva respuesta")
+    end
   end
   
   
   describe "DELETE /polls/:poll_id/answers/:id" do
-    
+    before :each do
+      @answer = FactoryGirl.create(:answer, question: @question)
+    end
+    it "responde con estatus de 200" do
+      delete api_v1_poll_answer_path(@poll, @answer), { token: @token.token }
+      expect(response).to have_http_status(200)
+    end
+    it "cambia el contador de Answer en -1" do
+      expect{
+        delete api_v1_poll_answer_path(@poll, @answer), { token: @token.token }
+      }.to change(Answer, :count).by(-1)
+    end
   end
   
 end
