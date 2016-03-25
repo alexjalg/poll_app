@@ -9,6 +9,7 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
         end
         it{ expect(response).to have_http_status(200)}
         it "mande la lista de encuestas" do
+            puts "\n\n #{response.body} \n\n"
             json = JSON.parse(response.body)
             expect(json.length).to eq(MyPoll.count)
         end

@@ -5,3 +5,19 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+user = User.create(
+    email: "alexjalg@gmail.com", 
+    uid: "123SDFSDdsfg!123asda", 
+    provider: "facebook" )
+poll = MyPoll.create( 
+    title: "Que leguaje de programación es mejor para ti?",
+    description: "Queremos saber que lenguajes son los preferidos de la pipol",
+    expires_at: DateTime.now + 1.year,
+    user: user )
+question = Question.create(
+    description: "Te importa la eficiencia de ejecución del programa?",
+    my_poll: poll )
+Answer.create(
+    description: "a) Sí, me importa mucho",
+    question: question )

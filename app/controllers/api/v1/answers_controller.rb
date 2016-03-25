@@ -4,7 +4,6 @@ class Api::V1::AnswersController < ApplicationController
   before_action :set_answer, only: [ :update,:destroy ]
   before_action :set_poll
   before_action( only: [:update,:destroy,:create] ) { |c| c.authenticate_owner(@poll.user) }
-
   #POST /polls/1/answers
   def create
     @answer = Answer.new(answer_params)

@@ -12,5 +12,13 @@ class Api::V1::UsersController < ApplicationController
           render "api/v1/users/show"
         end
     end
+    #arancar el proyecto
     #rails server -b $IP -p $PORT
+    
+    #corregir error al arancar el proyecto, error-> nos piden que hagamos migracion, la jacemos , pero no existe ninguna migracion peidente..es un bug, se debe volver a crear al bd, lo malomque pedemos la info
+    #rm -f db/*.sqlite3
+    #rake db:create
+    #RAILS_ENV=development rake db:migrate
+    #rails s -e development
+      
 end
