@@ -1,3 +1,5 @@
 json.array! @polls do |poll|
-    json.(poll,:id, :title,:description,:user_id,:expires_at)
+    json.type "my_polls"
+    json.id poll.id
+    json.attributes poll.attributes
 end
