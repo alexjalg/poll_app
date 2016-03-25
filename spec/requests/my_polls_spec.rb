@@ -8,10 +8,9 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
             get "/api/v1/polls"
         end
         it{ expect(response).to have_http_status(200)}
-        it "mande la lista de encuestas" do
-            puts "\n\n #{response.body} \n\n"
+        it "mande la lista de encuestas" do 
             json = JSON.parse(response.body)
-            expect(json.length).to eq(MyPoll.count)
+            expect(json["data"].length).to eq(MyPoll.count)
         end
     end
 
@@ -23,11 +22,11 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
         it{ expect(response).to have_http_status(200)}
         it "manda la encuesta solicitada" do
             json = JSON.parse(response.body)
-            expect(json["id"]).to eq(@poll.id)
+            expect(json["data"]["id"]).to eq(@poll.id)
         end
         it "manda los atributos de la encuesta" do
             json = JSON.parse(response.body)
-            expect(json.keys).to contain_exactly("id","title","description","user_id","expires_at")
+            expect(json["data"].keys).to contain_exactly("id","title","description","user_id","expires_at")
         end
     end
 
@@ -46,7 +45,7 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
         end
         it "responde con la encuesta creada" do
           json = JSON.parse(response.body)
-          expect(json["title"]).to eq("Hola mundo")
+          expect(json["data"]["title"]).to eq("Hola mundo")
         end
 
       end
@@ -54,6 +53,7 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
         before :each do
           post "/api/v1/polls"
         end
+        it{puts "\n\n #{response.body} \n\n" ; expect(response).to have_http_status(401)}
       end
       context "unvalid params" do
           before :each do
@@ -77,7 +77,7 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
       it{ expect(response).to have_http_status(200)}
       it "actualiza la encuesta indicada" do
         json = JSON.parse(response.body)
-        expect(json["title"]).to eq("Nuevo titulo")
+        expect(json["data"]["title"]).to eq("Nuevo titulo")
       end
     end
     context "con token inválido" do
@@ -86,7 +86,7 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
         @poll = FactoryGirl.create(:my_poll, user: FactoryGirl.create(:dummy_user))
         patch api_v1_poll_path(@poll), {token: @token.token, poll: { title: "Nuevo titulo"}}
       end
-      it{ expect(response).to have_http_status(401)}
+      it{puts "\n\n #{response.body} \n\n" ;  expect(response).to have_http_status(401)}
     end
   end
   describe "DELETE /polls/:id" do
