@@ -62,8 +62,9 @@ RSpec.describe Api::V1::MyPollsController, type: :request do
           end
           it{ expect(response).to have_http_status(422)}
           it "responde con los errores al guardar la encuesta" do
-               json = JSON.parse(response.body)
-               expect(json["errors"]).to_not be_empty
+            puts "\n\n #{response.body} \n\n"
+            json = JSON.parse(response.body)
+            expect(json["errors"]).to_not be_empty
           end
       end
   end

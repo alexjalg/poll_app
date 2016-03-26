@@ -18,8 +18,10 @@ class ApplicationController < ActionController::Base
     render template: "api/v1/errors"
   end
   
-  def error_array!(arreglo, status)
-    
+  def error_array!(array, status)
+    @errors = @errors + array
+    response.status = status
+    render template: "api/v1/errors"
   end
 
   def authenticate_owner(owner)
