@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   end
   
   def error_array!(array, status)
-    @errors = @errors + array
+    @errors += array
     response.status = status
     render template: "api/v1/errors"
   end
