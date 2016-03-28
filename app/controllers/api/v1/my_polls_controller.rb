@@ -1,9 +1,9 @@
-class Api::V1::MyPollsController < ApplicationController
+class Api::V1::MyPollsController < Api::V1::MasterApiController
 
   before_action :authenticate, only: [  :create, :update, :destroy ]
   before_action :set_poll, only: [ :show, :update, :destroy]
   before_action( only: [:update,:destroy] ) { |c| c.authenticate_owner(@poll.user) }
-  layout "api/v1/application"
+
     def index
         @polls = MyPoll.all
     end

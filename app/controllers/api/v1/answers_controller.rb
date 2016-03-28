@@ -1,10 +1,10 @@
-class Api::V1::AnswersController < ApplicationController
+class Api::V1::AnswersController < Api::V1::MasterApiController
 
   before_action :authenticate, except: [ :index,:show ]
   before_action :set_answer, only: [ :update,:destroy ]
   before_action :set_poll
   before_action( only: [:update,:destroy,:create] ) { |c| c.authenticate_owner(@poll.user) }
-  layout "api/v1/application"  
+
   #POST /polls/1/answers
   def create
     @answer = Answer.new(answer_params)
