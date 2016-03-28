@@ -20,8 +20,8 @@ RSpec.describe Api::V1::QuestionsController, type: :request do
     end
     it "mande la descripcion y el id de una pregunta" do
       json = JSON.parse(response.body)
-      question = json[0]
-      expect(question.keys).to contain_exactly("id", "description")
+      question = json["data"][0]["attributes"]
+      expect(question.keys).to contain_exactly("id", "description","created_at", "my_poll_id", "updated_at")
     end
   end
   
@@ -35,8 +35,8 @@ RSpec.describe Api::V1::QuestionsController, type: :request do
     it{ expect(response).to have_http_status(200)}
     it "esperamos que nos mande la pregunta solicitada" do
       json = JSON.parse(response.body)
-      expect(json["description"]).to eq(@question.description)
-      expect(json["id"]).to eq(@question.id)
+      expect(json["data"]["attributes"]["description"]).to eq(@question.description)
+      expect(json["data"]["attributes"]["id"]).to eq(@question.id)
     end
   end
   
@@ -57,7 +57,7 @@ RSpec.describe Api::V1::QuestionsController, type: :request do
       end
       it "responde con la pregunta creada" do
         json = JSON.parse(response.body)
-        expect(json["description"]).to eq("Cual es tu lenguaje favorita?")
+        expect(json["data"]["attributes"]["description"]).to eq("Cual es tu lenguaje favorita?")
       end
     end
     
@@ -95,7 +95,7 @@ RSpec.describe Api::V1::QuestionsController, type: :request do
     
     it " actualizo los datos indicados " do
       json = JSON.parse(response.body)
-      expect(json["description"]).to eq("Hola mundo..............")
+      expect(json["data"]["attributes"]["description"]).to eq("Hola mundo..............")
     end
     
   end

@@ -1,5 +1,6 @@
 
 class Api::V1::UsersController < ApplicationController
+  layout "api/v1/application"  
     # POST /users
     def create
         #params = {auth:{provider: 'facebook', uid:'123dgrer5645'}}

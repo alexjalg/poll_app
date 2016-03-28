@@ -25,7 +25,7 @@ RSpec.describe Api::V1::AnswersController, type: :request do
       end
       it "responde con la respuesta creada" do
         json = JSON.parse(response.body)
-        expect(json["description"]).to eq(valid_params[:description])
+        expect(json["data"]["attributes"]["description"]).to eq(valid_params[:description])
       end      
     end
     context "con usuario inválido" do
