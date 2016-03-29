@@ -8,4 +8,8 @@ class Api::V1::MasterApiController < ApplicationController
         headers['Access-Control-Allow-Methods'] = "POST,GET,DELETE,OPTIONS"
         headers['Access-Control-Allow-Headers'] = "Origin,Content-Type,Accept,Authorization,Token"
     end
+    
+    def xhr_options_request
+        head :ok
+    end
 end
