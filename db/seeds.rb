@@ -10,6 +10,10 @@ user = User.create(
     email: "alexjalg@gmail.com", 
     uid: "123SDFSDdsfg!123asda", 
     provider: "facebook" )
+Token.create(
+    token: "VMDKEIQQS123ALJ67575",
+    expires_at: DateTime.now + 1.year,
+    user: user )
 poll = MyPoll.create( 
     title: "Que leguaje de programación es mejor para ti?",
     description: "Queremos saber que lenguajes son los preferidos de la pipol",
