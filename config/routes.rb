@@ -1,4 +1,16 @@
 Rails.application.routes.draw do
+  get 'welcome/index'
+
+  get 'welcome/app'
+
+  get 'welcome/index'
+
+  get 'welcome/app'
+
+  get 'welcome/index'
+
+  get 'welcome/app'
+
   namespace :api, defaults: {format: "json"} do
     namespace :v1 do
       resources :users, only: [:create]
@@ -9,7 +21,8 @@ Rails.application.routes.draw do
       match "*unmatched", via: [:options], to: "master_api#xhr_options_request"
     end
   end
-  
+  get "/", to: "welcome#index"
+  #rails g controller welcome index app...para crear el controlador welcome
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
