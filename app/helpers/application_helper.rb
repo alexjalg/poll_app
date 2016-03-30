@@ -5,6 +5,6 @@ module ApplicationHelper
     end
     def current_user
         #Devolver nil si ningun usuario esta logueado o devolver el usuario que esta logueado
-        User.find(session[:user_id])
+        User.where(id: session[:user_id]).first
     end
 end

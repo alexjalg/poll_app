@@ -1,5 +1,8 @@
 <% if user_signed_in? %>
     <h1>Bienvenido <%= current_user.email %></h1>
+    <p>
+        <%= link_to "Cerrar sesión", "/logout", method: :delete %>
+    </p>
 <% else %>
     <h1>Bienvenido Developer</h1>
     <p>

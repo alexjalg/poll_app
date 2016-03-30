@@ -9,4 +9,8 @@ class SessionsController < ApplicationController
       redirect_to "/", notice: user.errors.full_messages.to_s
     end
   end
+  def destroy
+    session[:user_id] = nil
+    redirect_to "/", notice: "Hasta luego"
+  end
 end

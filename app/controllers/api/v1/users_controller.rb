@@ -21,5 +21,8 @@ class Api::V1::UsersController < Api::V1::MasterApiController
     #rake db:create
     #RAILS_ENV=development rake db:migrate
     #rails s -e development
+    
+    #Poblar la base de datos de desarrolllo  seed
+    #rake db:seed
       
 end

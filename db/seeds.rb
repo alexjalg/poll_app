@@ -7,7 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 user = User.create(
-    email: "alexjalg@gmail.com", 
+    email: "alexjalg_xD@gmail.com", 
     uid: "123SDFSDdsfg!123asda", 
     provider: "facebook" )
 Token.create(
