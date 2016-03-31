@@ -12,6 +12,15 @@ RSpec.describe MyApp, type: :model do
         expect(my_app.secret_key).to_not be_nil
     end
     it "deberia poder encontrar sus propios tokens" do
-        
+        my_app = FactoryGirl.create( :my_app )
+        token = FactoryGirl.create( :token, my_app: my_app, user: my_app.user)
+        expect(my_app.is_your_token?(token)).to eq(true)
+    end
+    it "deberia retornar falso para is_your_token? si el token no es de esta aplicación" do
+        my_app = FactoryGirl.create( :my_app )
+        second_app = FactoryGirl.create( :my_app , user: my_app.user)
+        token = FactoryGirl.create( :token, my_app: second_app, user: my_app.user)
+        expect(my_app.is_your_token?(token)).to eq(false)
+        expect(second_app.is_your_token?(token)).to eq(true)
     end
 end

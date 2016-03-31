@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330175601) do
+ActiveRecord::Schema.define(version: 20160331225846) do
 
   create_table "answers", force: :cascade do |t|
     t.integer  "question_id"
@@ -60,8 +60,10 @@ ActiveRecord::Schema.define(version: 20160330175601) do
     t.string   "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "my_app_id"
   end
 
+  add_index "tokens", ["my_app_id"], name: "index_tokens_on_my_app_id"
   add_index "tokens", ["user_id"], name: "index_tokens_on_user_id"
 
   create_table "users", force: :cascade do |t|

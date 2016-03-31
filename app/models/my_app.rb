@@ -1,11 +1,16 @@
 class MyApp < ActiveRecord::Base
   belongs_to :user
+  has_many :tokens
   validates :title, presence: true
   validates :user, presence: true
   validates :secret_key, uniqueness: true
   validates :app_id, uniqueness: true
   before_create :generate_app_id
   before_create :generate_secret_key
+  
+  def is_your_token?(token)
+    self.tokens.where( tokens: {id: token.id}).any?
+  end
   
   private 
   def generate_app_id
