@@ -1,19 +1,6 @@
 Rails.application.routes.draw do
-  resources :my_apps
-  get 'sessions/create'
-
-  get 'welcome/index'
-
-  get 'welcome/app'
-
-  get 'welcome/index'
-
-  get 'welcome/app'
-
-  get 'welcome/index'
-
-  get 'welcome/app'
-
+  get "/", to: "welcome#index"
+  resources :my_apps, except: [:show, :index]
   namespace :api, defaults: {format: "json"} do
     namespace :v1 do
       resources :users, only: [:create]
@@ -24,7 +11,6 @@ Rails.application.routes.draw do
       match "*unmatched", via: [:options], to: "master_api#xhr_options_request"
     end
   end
-  get "/", to: "welcome#index"
   get "/auth/:provider/callback", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
   #rails g controller welcome index app...para crear el controlador welcome
